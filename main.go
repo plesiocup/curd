@@ -1,25 +1,19 @@
 package main
 
 import (
-	"net/http"
-
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/plesiocup/recommend/db"
+	"github.com/plesiocup/recommend/handler"
 )
 
-func connect(c echo.Context) error {
-	db, _ := db.DB.DB()
-	defer db.Close()
-	err := db.Ping()
-	if err != nil {
-		return c.String(http.StatusInternalServerError, "DB接続失敗しました")
-	} else {
-		return c.String(http.StatusOK, "DB接続しました")
-	}
-}
-
 func main() {
+	godotenv.Load(".env")
 	e := echo.New()
-	e.GET("/", connect)
+	db.Connect()
+	// db.Migrate()
+
+	e.POST("/users", handler.CreateUser)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
