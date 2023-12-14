@@ -26,7 +26,7 @@ func CreateUser(c echo.Context) error {
 	}
 
 	// 空のフィールドチェック
-	if util.HasEmptyField(obj, "Username", "Email", "Password") {
+	if util.HasEmptyField(obj, "Username", "Email", "Role", "Password") {
 		return c.JSON(http.StatusBadRequest, echo.Map{
 			"message": "missing request field",
 		})

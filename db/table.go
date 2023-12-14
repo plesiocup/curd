@@ -11,16 +11,32 @@ type User struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
 type Movie struct {
-	Id          uint   `gorm:"prmaryKey"`
-	Title       string `gorm:"not null"`
-	Description string `gorm:"not null"`
-	Category    string `gorm:"not null"`
-	Playtime    string `gorm:"not null"`
-	Review      uint
-	ReleaseYear uint
-	Img         string
-	AmazonURL   string `gorm:"not null"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	Id             uint   `gorm:"primaryKey"`
+	Title          string `gorm:"not null"`
+	Description    string `gorm:"not null"`
+	Category       string `gorm:"not null"`
+	Evaluation     uint   `gorm:"not null"`
+	Playtime       string `gorm:"not null"`
+	MovieURL       string `gorm:"not null"`
+	ImageURL       string
+	ReleaseYear    uint
+	ClickedCount   uint
+	EvaluatedCount uint
+	SearchId       uint
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+}
+
+type UserbasedRecommend struct {
+	Id         uint `gorm:"primaryKey"`
+	MovieId    uint `gorm:"not null"`
+	Evaluation uint
+}
+
+type ContentbasedRecommend struct {
+	Id         uint `gorm:"primaryKey"`
+	Evaluation uint
+	Category   string
 }

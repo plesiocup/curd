@@ -41,8 +41,18 @@ func main() {
 	}
 
 	e.POST("/signup", handler.CreateUser)
+	e.GET("/user", handler.GetUser)
+
+	e.POST("/login", handler.Login)
 
 	r := e.Group("/auth")
 	r.Use(middleware.JWTWithConfig(config))
+
+	r.GET("", handler.Auth)
+
+	r.POST("/movie", handler.CreateMovie)
+	r.PUT("/movie", handler.UpdateMovie)
+	r.DELETE("/movie", handler.DeleteMovie)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
