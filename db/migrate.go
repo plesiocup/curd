@@ -17,9 +17,10 @@ func Migrate() {
 	// test user 作成
 	hashedPass, _ := util.HashPassword(os.Getenv("TESTUSER_PASSWORD"))
 	user := User{
-		Username: "user",
-		Email:    "user@plesio.com",
+		Username: "admin",
+		Email:    "admin@plesio.com",
 		Password: hashedPass,
+		Role:     0, // admin
 	}
 	DB.Create(&user)
 

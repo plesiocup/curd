@@ -13,6 +13,7 @@ func CreateUser(c echo.Context) error {
 	type Body struct {
 		Username string `json:"username"`
 		Email    string `json:"email"`
+		Role     uint   `json:"role"`
 		Password string `json:"password"`
 	}
 
@@ -43,6 +44,7 @@ func CreateUser(c echo.Context) error {
 			new := db.User{
 				Username: obj.Username,
 				Email:    obj.Email,
+				Role:     obj.Role,
 				Password: hashedPass,
 			}
 			db.DB.Create(&new)
@@ -51,6 +53,7 @@ func CreateUser(c echo.Context) error {
 				"username":   new.Username,
 				"email":      new.Email,
 				"password":   new.Password,
+				"role":       new.Role,
 				"created_at": user.CreatedAt,
 				"updated_at": user.UpdatedAt,
 			})

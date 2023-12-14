@@ -7,6 +7,7 @@ type User struct {
 	Username  string `gorm:"not null"`
 	Email     string `gorm:"not null;unique"`
 	Password  string `gorm:"not null"`
+	Role      uint   `gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
