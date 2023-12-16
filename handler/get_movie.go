@@ -42,27 +42,28 @@ func GetMovie(c echo.Context) error {
 // searchidで返すやつ(配列で受け取って配列で返す)
 func GetSearchedMovie(c echo.Context) error {
 
-	searchid := c.Param("searchId")
-	var movie db.Movie
-	if err := db.DB.Where("searchid = ?", searchid).First(&movie).Error; err != nil {
+	type Body struct {
+		SearchId []uint `json:"search_id"`
+	}
 
-		if err == gorm.ErrRecordNotFound {
-			// return 404
-			return c.JSON(http.StatusNotFound, echo.Map{
-				"message": "Movie Not Found",
-			})
+	obj := new(Body)
 
-		} else {
-			// return 500
-			return c.JSON(http.StatusInternalServerError, echo.Map{
-				"message": "Database Error: " + err.Error(),
-			})
-		}
+	if err := c.Bind(obj); err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"message": "Json Format Error: " + err.Error(),
+		})
+	}
 
+	// 映画IDの配列を元にレコードを検索
+	var movies []db.Movie
+	if err := db.DB.Find(&movies, obj.SearchId).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"message": "Failed to search movies",
+		})
 	} else {
 		// return 200
-		return c.JSON(http.StatusCreated, echo.Map{
-			"movie": movie,
+		return c.JSON(http.StatusOK, echo.Map{
+			"movies": movies,
 		})
 
 	}
