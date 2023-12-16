@@ -31,12 +31,14 @@ type Movie struct {
 
 type UserbasedRecommend struct {
 	Id         uint `gorm:"primaryKey"`
-	MovieId    uint `gorm:"not null"`
+	UserId     uint
+	MovieId    uint
 	Evaluation uint
+	Vector     int
 }
 
-type ContentbasedRecommend struct {
-	Id         uint `gorm:"primaryKey"`
-	Evaluation uint
-	Category   string
-}
+// type ContentbasedRecommend struct {
+// 	MovieId    uint `gorm:"primaryKey"`
+// 	Evaluation uint
+// 	Category   string
+// }

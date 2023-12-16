@@ -52,7 +52,6 @@ func CreateUser(c echo.Context) error {
 				"id":         new.Id,
 				"username":   new.Username,
 				"email":      new.Email,
-				"password":   new.Password,
 				"role":       new.Role,
 				"created_at": user.CreatedAt,
 				"updated_at": user.UpdatedAt,
