@@ -12,14 +12,14 @@ import (
 
 func CreateMovie(c echo.Context) error {
 	type Body struct {
-		Title       string `json:"title"`
-		Description string `json:"description"`
-		Category    string `json:"category"`
-		Evaluation  uint   `json:"evaluation"`
-		Playtime    string `json:"playtime"`
-		MovieURL    string `json:"movie_url"`
-		ImageURL    string `json:"image_url"`
-		ReleaseYear uint   `json:"release_year"`
+		Title       string  `json:"title"`
+		Description string  `json:"description"`
+		Category    string  `json:"category"`
+		Evaluation  float64 `json:"evaluation"`
+		Playtime    string  `json:"playtime"`
+		MovieURL    string  `json:"movie_url"`
+		ImageURL    string  `json:"image_url"`
+		ReleaseYear uint    `json:"release_year"`
 	}
 
 	obj := new(Body)

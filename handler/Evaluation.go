@@ -9,11 +9,22 @@ import (
 	"github.com/plesiocup/recommend/db"
 )
 
-func updateEvaluate(c echo.Context) error {
-
+func UpdateEvaluate(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userid := claims["id"].(float64)
+
+	type Body struct {
+		UserEval float64 `json:"user_eval"`
+	}
+
+	obj := new(Body)
+
+	if err := c.Bind(obj); err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"message": "Json Format Error: " + err.Error(),
+		})
+	}
 
 	movieidstr := c.Param("movieid")
 	movieid, err := strconv.ParseUint(movieidstr, 10, 64)
@@ -29,13 +40,13 @@ func updateEvaluate(c echo.Context) error {
 		})
 	} else {
 		movie.Evaluation += 1
-		movie.ClickedCount += 1
 
 		db.DB.Save(&movie)
 	}
 	// 再計算＆更新
-	newEvaluation := (movie.Evaluation*movie.EvaluatedCount + movie.ClickedCount) / (movie.EvaluatedCount + movie.ClickedCount)
+	newEvaluation := (movie.Evaluation*float64(movie.EvaluatedCount) + obj.UserEval) / (float64(movie.EvaluatedCount) + 1)
 	movie.Evaluation = newEvaluation
+	movie.EvaluatedCount += 1
 	db.DB.Save(&movie)
 	// userbasedrecommendのcreate(userid,movieid,evaluation)
 	new := db.UserbasedRecommend{

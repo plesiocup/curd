@@ -10,17 +10,16 @@ import (
 // 情報のアプデ(バッチ内から)
 func UpdateMovie(c echo.Context) error {
 	type Body struct {
-		Title          string `json:"title"`
-		Description    string `json:"description"`
-		Category       string `json:"category"`
-		Evaluation     uint   `json:"evaluation"`
-		Playtime       string `json:"playtime"`
-		MovieURL       string `json:"movie_url"`
-		ImageURL       string `json:"image_url"`
-		ReleaseYear    uint   `json:"release_year"`
-		ClickedCount   uint   `json:"clicked_count"`
-		EvaluatedCount uint   `json:"evaluated_count"`
-		SearchId       uint   `json:"search_id"`
+		Title          string  `json:"title"`
+		Description    string  `json:"description"`
+		Category       string  `json:"category"`
+		Evaluation     float64 `json:"evaluation"`
+		Playtime       string  `json:"playtime"`
+		MovieURL       string  `json:"movie_url"`
+		ImageURL       string  `json:"image_url"`
+		ReleaseYear    uint    `json:"release_year"`
+		EvaluatedCount uint    `json:"evaluated_count"`
+		SearchId       uint    `json:"search_id"`
 	}
 
 	id := c.Param("id")
@@ -48,7 +47,6 @@ func UpdateMovie(c echo.Context) error {
 		movie.MovieURL = obj.MovieURL
 		movie.ImageURL = obj.ImageURL
 		movie.ReleaseYear = obj.ReleaseYear
-		movie.ClickedCount = obj.ClickedCount
 		movie.EvaluatedCount = obj.EvaluatedCount
 		movie.SearchId = obj.SearchId
 

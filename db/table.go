@@ -13,16 +13,15 @@ type User struct {
 }
 
 type Movie struct {
-	Id             uint   `gorm:"primaryKey"`
-	Title          string `gorm:"not null"`
-	Description    string `gorm:"not null"`
-	Category       string `gorm:"not null"`
-	Evaluation     uint   `gorm:"not null"`
-	Playtime       string `gorm:"not null"`
-	MovieURL       string `gorm:"not null"`
+	Id             uint    `gorm:"primaryKey"`
+	Title          string  `gorm:"not null"`
+	Description    string  `gorm:"not null"`
+	Category       string  `gorm:"not null"`
+	Evaluation     float64 `gorm:"not null"`
+	Playtime       string  `gorm:"not null"`
+	MovieURL       string  `gorm:"not null"`
 	ImageURL       string
 	ReleaseYear    uint
-	ClickedCount   uint
 	EvaluatedCount uint
 	SearchId       uint
 	CreatedAt      time.Time
@@ -33,12 +32,6 @@ type UserbasedRecommend struct {
 	Id         uint `gorm:"primaryKey"`
 	UserId     uint
 	MovieId    uint
-	Evaluation uint
+	Evaluation float64
 	Vector     int
 }
-
-// type ContentbasedRecommend struct {
-// 	MovieId    uint `gorm:"primaryKey"`
-// 	Evaluation uint
-// 	Category   string
-// }
