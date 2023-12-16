@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
@@ -77,7 +78,7 @@ func UpdateEvaluate(c echo.Context) error {
 
 		// FastAPIエンドポイントのURL
 
-		apiURL := "https://python-recommend.azurewebsites.net/userbasedrecommend/" + strconv.Itoa(int(userid))
+		apiURL := os.Getenv("ENDPOINT_URL") + strconv.Itoa(int(userid))
 
 		jsonDataBytes := []byte(jsonData)
 		resp, err := http.Post(apiURL, "application/json", bytes.NewBuffer(jsonDataBytes))
