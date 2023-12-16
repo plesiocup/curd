@@ -3,13 +3,14 @@ package db
 import "time"
 
 type User struct {
-	Id        uint   `gorm:"primaryKey"`
-	Username  string `gorm:"not null"`
-	Email     string `gorm:"not null;unique"`
-	Password  string `gorm:"not null"`
-	Role      uint   `gorm:"not null"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id         uint    `gorm:"primaryKey"`
+	Username   string  `gorm:"not null"`
+	Email      string  `gorm:"not null;unique"`
+	Password   string  `gorm:"not null"`
+	Role       uint    `gorm:"not null"`
+	Recommends []Movie `gorm:"many2many:user_recommendations;"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type Movie struct {
@@ -33,5 +34,4 @@ type UserbasedRecommend struct {
 	UserId     uint
 	MovieId    uint
 	Evaluation float64
-	Vector     int
 }

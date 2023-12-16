@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"sort"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
@@ -76,8 +75,8 @@ func GetUserRecommend(c echo.Context) error {
 	claims := user.Claims.(jwt.MapClaims)
 	userid := claims["id"].(float64)
 
-	var userrecommend []db.UserbasedRecommend
-	if err := db.DB.Where("userid = ?", userid).Find(&userrecommend).Error; err != nil {
+	var userrec db.User
+	if err := db.DB.Preload("Recommends").First(&userrec, userid).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.JSON(http.StatusNotFound, echo.Map{
 				"message": "Record Not Found",
@@ -88,11 +87,8 @@ func GetUserRecommend(c echo.Context) error {
 			})
 		}
 	} else {
-		// vectorの上位10個のmovieIdを配列で返す
-		sortedVectors := getSortedVector(userrecommend)
-		res := getTopTens(sortedVectors)
 		return c.JSON(http.StatusOK, echo.Map{
-			"id": res,
+			"recommends": userrec.Recommends,
 		})
 	}
 }
@@ -115,25 +111,6 @@ func GetContentRecommend(c echo.Context) error {
 		}
 	} else {
 		// そのカテゴリの映画一覧を配列で返す
-		return c.JSON(http.StatusOK, echo.Map{
-			"movies": movies,
-		})
+		return c.JSON(http.StatusOK, movies)
 	}
-}
-
-// sort
-func getSortedVector(userrec []db.UserbasedRecommend) []db.UserbasedRecommend {
-	sort.Slice(userrec, func(i, j int) bool {
-		return userrec[i].Vector > userrec[j].Vector
-	})
-	return userrec
-}
-
-// しぼりこみ
-func getTopTens(userrec []db.UserbasedRecommend) []uint {
-	var topTenMovie []uint
-	for i := 0; i < len(userrec) && i < 10; i++ {
-		topTenMovie = append(topTenMovie, userrec[i].MovieId)
-	}
-	return topTenMovie
 }

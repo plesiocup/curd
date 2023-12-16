@@ -8,9 +8,10 @@ import (
 )
 
 func Migrate() {
+	DB.Exec("DROP TABLE IF EXISTS user_recommendations")
 	DB.Exec("DROP TABLE IF EXISTS users")
 	DB.Exec("DROP TABLE IF EXISTS movies")
-	DB.Exec("DROP TABLE IF EXISTS userbasedrecommends")
+	DB.Exec("DROP TABLE IF EXISTS userbased_recommends")
 
 	DB.AutoMigrate(&User{})
 	DB.AutoMigrate(&Movie{})

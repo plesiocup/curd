@@ -47,6 +47,7 @@ func main() {
 
 	e.POST("/movie", handler.CreateMovie)
 	e.PUT("/movie/:id", handler.UpdateMovie)
+	e.GET("/contentbasedRecommend/:category", handler.GetContentRecommend)
 
 	r := e.Group("/auth")
 	r.Use(middleware.JWTWithConfig(config))
@@ -56,7 +57,6 @@ func main() {
 	r.GET("/getMovie/:id", handler.GetMovie)
 	r.GET("/getMovie", handler.GetSearchedMovie)
 	r.GET("/userbasedRecommend", handler.GetUserRecommend)
-	r.GET("/contentbasedRecommend/:category", handler.GetContentRecommend)
 
 	r.PUT("/evaluate/:movieid", handler.UpdateEvaluate)
 	// r.DELETE("/movie", handler.DeleteMovie)
