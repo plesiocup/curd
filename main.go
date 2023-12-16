@@ -45,13 +45,13 @@ func main() {
 
 	e.POST("/login", handler.Login)
 
+	e.POST("/movie", handler.CreateMovie)
+	e.PUT("/movie/:id", handler.UpdateMovie)
+
 	r := e.Group("/auth")
 	r.Use(middleware.JWTWithConfig(config))
 
 	r.GET("", handler.Auth)
-
-	r.POST("/movie", handler.CreateMovie)
-	r.PUT("/movie/:id", handler.UpdateMovie)
 
 	r.GET("/getMovie/:id", handler.GetMovie)
 	r.GET("/getMovie", handler.GetSearchedMovie)
