@@ -17,7 +17,7 @@ func main() {
 	godotenv.Load(".env")
 	e := echo.New()
 	db.Connect()
-	db.Migrate()
+	// db.Migrate()
 
 	config := middleware.JWTConfig{
 		SigningKey: []byte(os.Getenv("JWT_SECRET_KEY")),
@@ -41,7 +41,7 @@ func main() {
 	}
 
 	e.POST("/signup", handler.CreateUser)
-	e.GET("/user", handler.GetUser)
+	// e.GET("/user", handler.GetUser)
 
 	e.POST("/login", handler.Login)
 
@@ -51,8 +51,15 @@ func main() {
 	r.GET("", handler.Auth)
 
 	r.POST("/movie", handler.CreateMovie)
-	r.PUT("/movie", handler.UpdateMovie)
-	r.DELETE("/movie", handler.DeleteMovie)
+	r.PUT("/movie/:id", handler.UpdateMovie)
+
+	r.GET("/getMovie/:id", handler.GetMovie)
+	r.GET("/getMovie", handler.GetSearchedMovie)
+	r.GET("/userbasedRecommend", handler.GetUserRecommend)
+	r.GET("/contentbasedRecommend/:category", handler.GetContentRecommend)
+
+	r.PUT("/evaluate/:movieid", handler.UpdateEvaluate)
+	// r.DELETE("/movie", handler.DeleteMovie)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
