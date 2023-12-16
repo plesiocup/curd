@@ -39,27 +39,25 @@ func UpdateEvaluate(c echo.Context) error {
 			"message": "Database Error: " + err.Error(),
 		})
 	} else {
-		movie.Evaluation += 1
 
+		// 再計算＆更新
+		movie.EvaluatedCount += 1
+		newEvaluation := (movie.Evaluation*float64(movie.EvaluatedCount) + obj.UserEval) / (float64(movie.EvaluatedCount) + 1)
+		movie.Evaluation = newEvaluation
 		db.DB.Save(&movie)
+		// userbasedrecommendのcreate(userid,movieid,evaluation)
+		new := db.UserbasedRecommend{
+			UserId:     uint(userid),
+			MovieId:    uint(movieid),
+			Evaluation: newEvaluation,
+		}
+		db.DB.Create(&new)
+		return c.JSON(http.StatusCreated, echo.Map{
+			"UserId":     new.UserId,
+			"MovieId":    new.MovieId,
+			"Evaluation": new.Evaluation,
+		})
+		// ここからpythonをトリガー
 	}
-	// 再計算＆更新
-	newEvaluation := (movie.Evaluation*float64(movie.EvaluatedCount) + obj.UserEval) / (float64(movie.EvaluatedCount) + 1)
-	movie.Evaluation = newEvaluation
-	movie.EvaluatedCount += 1
-	db.DB.Save(&movie)
-	// userbasedrecommendのcreate(userid,movieid,evaluation)
-	new := db.UserbasedRecommend{
-		UserId:     uint(userid),
-		MovieId:    uint(movieid),
-		Evaluation: newEvaluation,
-	}
-	db.DB.Create(&new)
-	return c.JSON(http.StatusCreated, echo.Map{
-		"UserId":     new.UserId,
-		"MovieId":    new.MovieId,
-		"Evaluation": new.Evaluation,
-	})
-	// ここからpythonをトリガー
 
 }

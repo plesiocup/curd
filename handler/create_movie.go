@@ -12,14 +12,15 @@ import (
 
 func CreateMovie(c echo.Context) error {
 	type Body struct {
-		Title       string  `json:"title"`
-		Description string  `json:"description"`
-		Category    string  `json:"category"`
-		Evaluation  float64 `json:"evaluation"`
-		Playtime    string  `json:"playtime"`
-		MovieURL    string  `json:"movie_url"`
-		ImageURL    string  `json:"image_url"`
-		ReleaseYear uint    `json:"release_year"`
+		Title          string  `json:"title"`
+		Description    string  `json:"description"`
+		Category       string  `json:"category"`
+		Evaluation     float64 `json:"evaluation"`
+		Playtime       string  `json:"playtime"`
+		MovieURL       string  `json:"movie_url"`
+		ImageURL       string  `json:"image_url"`
+		ReleaseYear    uint    `json:"release_year"`
+		EvaluatedCount uint    `json:"evaluated_count"`
 	}
 
 	obj := new(Body)
@@ -37,25 +38,27 @@ func CreateMovie(c echo.Context) error {
 	}
 
 	new := db.Movie{
-		Title:       obj.Title,
-		Description: obj.Description,
-		Category:    obj.Category,
-		Evaluation:  obj.Evaluation,
-		Playtime:    obj.Playtime,
-		MovieURL:    obj.MovieURL,
-		ImageURL:    obj.ImageURL,
-		ReleaseYear: obj.ReleaseYear,
+		Title:          obj.Title,
+		Description:    obj.Description,
+		Category:       obj.Category,
+		Evaluation:     obj.Evaluation,
+		Playtime:       obj.Playtime,
+		MovieURL:       obj.MovieURL,
+		ImageURL:       obj.ImageURL,
+		ReleaseYear:    obj.ReleaseYear,
+		EvaluatedCount: obj.EvaluatedCount,
 	}
 	db.DB.Create(&new)
 	return c.JSON(http.StatusCreated, echo.Map{
-		"title":        new.Title,
-		"description":  new.Description,
-		"category":     new.Category,
-		"evaluation":   new.Evaluation,
-		"playtime":     new.Playtime,
-		"movie_url":    new.MovieURL,
-		"image_url":    new.ImageURL,
-		"release_year": new.ReleaseYear,
+		"title":           new.Title,
+		"description":     new.Description,
+		"category":        new.Category,
+		"evaluation":      new.Evaluation,
+		"playtime":        new.Playtime,
+		"movie_url":       new.MovieURL,
+		"image_url":       new.ImageURL,
+		"release_year":    new.ReleaseYear,
+		"evaluated_count": new.EvaluatedCount,
 	})
 
 }

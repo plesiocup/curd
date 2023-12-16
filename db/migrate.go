@@ -10,9 +10,11 @@ import (
 func Migrate() {
 	DB.Exec("DROP TABLE IF EXISTS users")
 	DB.Exec("DROP TABLE IF EXISTS movies")
+	DB.Exec("DROP TABLE IF EXISTS userbasedrecommends")
 
 	DB.AutoMigrate(&User{})
 	DB.AutoMigrate(&Movie{})
+	DB.AutoMigrate(&UserbasedRecommend{})
 
 	// test user 作成
 	hashedPass, _ := util.HashPassword(os.Getenv("TESTUSER_PASSWORD"))
