@@ -18,6 +18,7 @@ func main() {
 	e := echo.New()
 	db.Connect()
 	// db.Migrate()
+	e.Use(middleware.CORS())
 
 	config := middleware.JWTConfig{
 		SigningKey: []byte(os.Getenv("JWT_SECRET_KEY")),
